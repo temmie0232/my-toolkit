@@ -1,0 +1,38 @@
+" jj で Insert モードを抜ける (Esc と同じ)
+inoremap jj <Esc>
+
+" 検索時に大文字・小文字を区別しない
+set ignorecase
+
+" ただし、検索文字列に大文字が含まれている場合は区別する
+set smartcase
+
+" 検索結果をハイライト表示する
+set hlsearch
+
+" 検索時、ファイルの末尾まで行ったら先頭に戻る
+set wrapscan
+
+" シンタックスハイライトを有効にする
+syntax on
+
+" 行番号を表示する
+set number
+
+" 現在行は絶対行番号、上下は相対行番号
+set relativenumber
+
+" 現在の行をハイライトする
+set cursorline
+
+" タブの幅をスペース4つ分に設定
+set tabstop=4
+
+" オートインデントの幅をスペース4つ分に設定
+set shiftwidth=4
+
+" タブをスペースに変換する
+set expandtab
+
+" オートインデントを有効にする
+set autoindent

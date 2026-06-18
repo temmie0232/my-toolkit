@@ -1,0 +1,8 @@
+# Windows のダウンロード由来メタデータ (Mark of the Web)
+*:Zone.Identifier
+
+# バックアップ
+*.bak
+
+# OS
+.DS_Store

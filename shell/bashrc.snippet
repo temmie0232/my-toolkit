@@ -1,0 +1,11 @@
+# >>> my-toolkit (shell/bashrc.snippet) >>>
+# このブロックは my-toolkit の SETUP がマーカーで冪等に追記する。手で編集しないこと。
+
+# ~/.local/bin を PATH に通す（rtk / gh などがここに入る）
+export PATH="$HOME/.local/bin:$PATH"
+
+# nvm（インストールされていれば読み込む。無ければ何もしない）
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# <<< my-toolkit <<<
