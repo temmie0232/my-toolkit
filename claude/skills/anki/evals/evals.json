@@ -3,8 +3,8 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "AZ900の参考書(AZ900/AZ900.md)のSession 1からAnkiカードを作ってほしい。概念系のMCQカードで。",
-      "expected_output": "Session 1の概念（弾力性、スケーラビリティ、CapEx/OpEx、IaaS/PaaS/SaaS等）について、5パターンの角度からMCQ形式のカードがTSVで生成される",
+      "prompt": "AZ900の参考書(AZ900/AZ900.md)のSession 1からAnkiカードを作ってほしい。",
+      "expected_output": "Session 1の概念（弾力性、スケーラビリティ、CapEx/OpEx、IaaS/PaaS/SaaS等）について、逆引き・定義・分かれ目・シナリオがrecall型Basic（選択肢なし、裏面は分かれ目キーワード太字の1行）、数値がClozeで、頻出度×模試カバレッジに応じて1概念0〜5枚のカードが #notetype column ヘッダ付きTSVで生成される。生成カードにMCQが含まれない（MCQは模試逐語と一意化不能シナリオのみ）",
       "files": ["/home/systena/learning/AZ900/AZ900.md"]
     },
     {
@@ -16,8 +16,20 @@
     {
       "id": 3,
       "prompt": "AZ900の模擬試験1(AZ900/AZ900_模擬試験1.md)の最初の10問からAnkiカードを作って。",
-      "expected_output": "模擬試験の問題がそのままMCQ形式のカードに変換され、正解と解説が裏面に入ったTSVが生成される",
+      "expected_output": "模擬試験の問題がそのままMCQ形式のカードに逐語変換され、正解と解説・全誤選択肢の理由が裏面に入ったTSVが生成される。source::mock-exam タグが付く",
       "files": ["/home/systena/learning/AZ900/AZ900_模擬試験1.md"]
+    },
+    {
+      "id": 4,
+      "prompt": "Java Silver問題集(JAVA/徹底攻略Java SE 17 Silver問題集.md)の最初の章からAnkiカードを作って。",
+      "expected_output": "コード付き問題が逐語MCQ変換され、コードは & < > がHTMLエスケープされ改行が<br>に変換された<pre><code>ブロックとしてTSVに入る。フィールド内にリテラルなタブ・改行がない",
+      "files": ["/home/systena/learning/JAVA/徹底攻略Java SE 17 Silver問題集.md"]
+    },
+    {
+      "id": 5,
+      "prompt": "AP/AM_memo.md をAnkiカードにして。",
+      "expected_output": "メモ系と判別され、「用語: 定義」の各行から定義問い＋逆引きのrecall Basicカードが生成される。数値を含む行はClozeカード（穴埋めノートタイプ）になる",
+      "files": ["/home/systena/learning/AP/AM_memo.md"]
     }
   ]
 }
