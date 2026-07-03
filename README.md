@@ -52,6 +52,7 @@ Claude が `SETUP.md` を読み、スキルのリンク・シェル設定・CLI 
 | `claude/skills/cognitive-walkthrough/` | ペルソナになりきって Web アプリの認知的ウォークスルー（UX レビュー）を行うスキル |
 | `claude/skills/goal-locked-loop/` | ゴールを確定させてから完了まで敵対的検証ループで回しきるスキル |
 | `claude/skills/meeting-minutes/` | 音声文字起こしをフィラー除去・議題別に整形するスキル |
+| `claude/skills/pdf2text/` | PDF を並列視覚読み取りで高精度な Markdown に忠実変換するスキル（学習パイプラインの入口） |
 | `claude/skills/study-material-optimizer/` | 素の Markdown 教材をジャンル別（参考書/問題集/ドリル）に学習最適化するスキル |
 | `claude/skills/tutor/` | 教材を使った対話型の家庭教師スキル（進捗・弱点を永続記録） |
 | `claude/skills/anki/` | 教材・模擬試験から Anki フラッシュカード用 TSV を生成するスキル |
