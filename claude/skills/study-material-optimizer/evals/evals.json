@@ -1,0 +1,23 @@
+{
+  "skill_name": "study-material-optimizer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "JAVA/徹底攻略Java SE 17 Silver問題集.md の第1章だけを学習用に最適化してほしい。模擬試験は別ファイルにはない。",
+      "expected_output": "問題集型と判別され、全体像→Must Memorize→ひっかけパターン→出典付き問題（コード逐語保持）の構成で raw を上書きせずに生成される",
+      "files": ["~/learning/JAVA/徹底攻略Java SE 17 Silver問題集.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "この単語帳のMarkdown（英単語 | 意味 の表が並んでるだけのやつ）を勉強しやすくして。tutorとankiで使いたい。",
+      "expected_output": "ドリル型と判別され、答え列見出しに「答え」を含む3列ドリル表の契約を満たす形で再構成される。過去問チャレンジは作られない",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "world/sekaiisan-kentei-3kyu-kakomon.md は世界遺産検定3級の過去問。これを教材化して勉強できるようにして。",
+      "expected_output": "問題集型（過去問集）として、全セッションに全体像と出典付き問題が配置され、頻出トピックの分析（analysis.md相当）に基づく重み付けがされる",
+      "files": ["~/learning/world/sekaiisan-kentei-3kyu-kakomon.md"]
+    }
+  ]
+}

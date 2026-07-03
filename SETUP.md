@@ -47,7 +47,9 @@ for skill_dir in "$REPO"/claude/skills/*/; do
 done
 ```
 
-リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `meeting-minutes`。
+リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `meeting-minutes` /
+`study-material-optimizer` / `tutor` / `anki` / `shared`（学習パイプラインの共通リソース。
+SKILL.md を持たないが、optimizer/tutor/anki が参照する教材フォーマット規約が入っている）。
 
 ---
 
@@ -165,7 +167,7 @@ cp -r /tmp/anthropic-skills/skills/frontend-design ~/.claude/skills/ 2>/dev/null
 ## ステップ 6: 検証
 
 ```bash
-echo "=== スキルのリンク ==="; ls -la ~/.claude/skills | grep -E "cognitive-walkthrough|goal-locked-loop|meeting-minutes"
+echo "=== スキルのリンク ==="; ls -la ~/.claude/skills | grep -E "cognitive-walkthrough|goal-locked-loop|meeting-minutes|study-material-optimizer|tutor|anki|shared"
 echo "=== vimrc ==="; ls -la ~/.vimrc
 echo "=== bashrc ==="; grep -c ">>> my-toolkit" ~/.bashrc
 echo "=== rtk ==="; command -v rtk && grep -c "rtk hook" ~/.claude/settings.json

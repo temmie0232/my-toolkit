@@ -1,0 +1,23 @@
+{
+  "skill_name": "anki",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "AZ900の参考書(AZ900/AZ900.md)のSession 1からAnkiカードを作ってほしい。概念系のMCQカードで。",
+      "expected_output": "Session 1の概念（弾力性、スケーラビリティ、CapEx/OpEx、IaaS/PaaS/SaaS等）について、5パターンの角度からMCQ形式のカードがTSVで生成される",
+      "files": ["/home/systena/learning/AZ900/AZ900.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "瞬間英作文(ENG/瞬間英作文/瞬間英作文.md)のSession 1からAnkiカードを作って。",
+      "expected_output": "Session 1のドリル表から日本語→英語のBasicカードがTSVで生成される",
+      "files": ["/home/systena/learning/ENG/瞬間英作文/瞬間英作文.md"]
+    },
+    {
+      "id": 3,
+      "prompt": "AZ900の模擬試験1(AZ900/AZ900_模擬試験1.md)の最初の10問からAnkiカードを作って。",
+      "expected_output": "模擬試験の問題がそのままMCQ形式のカードに変換され、正解と解説が裏面に入ったTSVが生成される",
+      "files": ["/home/systena/learning/AZ900/AZ900_模擬試験1.md"]
+    }
+  ]
+}
