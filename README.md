@@ -51,6 +51,8 @@ Claude が `SETUP.md` を読み、スキルのリンク・シェル設定・CLI 
 | [`SETUP.md`](SETUP.md) | Claude が読んで実行するセットアップ手順書（このリポジトリの心臓部） |
 | `claude/skills/cognitive-walkthrough/` | ペルソナになりきって Web アプリの認知的ウォークスルー（UX レビュー）を行うスキル |
 | `claude/skills/goal-locked-loop/` | ゴールを確定させてから完了まで敵対的検証ループで回しきるスキル |
+| `claude/skills/magi/` | 5 機のAIに「独立検討→相互反論→決議前検証→多数決」の討論をさせて意思決定するスキル（討論役は `claude/agents/` の 5 体） |
+| `claude/agents/` | `magi` が呼ぶ討論サブエージェント 5 体（MELCHIOR/BALTHASAR/CASPER/ARTABAN/SIBYLLA）。`~/.claude/agents/` にリンクされる |
 | `claude/skills/meeting-minutes/` | 音声文字起こしをフィラー除去・議題別に整形するスキル |
 | `claude/skills/pdf2text/` | PDF を並列視覚読み取りで高精度な Markdown に忠実変換するスキル（学習パイプラインの入口） |
 | `claude/skills/study-material-optimizer/` | 素の Markdown 教材をジャンル別（参考書/問題集/ドリル）に学習最適化するスキル |

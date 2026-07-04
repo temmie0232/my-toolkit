@@ -47,9 +47,44 @@ for skill_dir in "$REPO"/claude/skills/*/; do
 done
 ```
 
-リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `meeting-minutes` /
+リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `magi` / `meeting-minutes` /
 `pdf2text` / `study-material-optimizer` / `tutor` / `anki` / `shared`（学習パイプラインの
 共通リソース。SKILL.md を持たないが、optimizer/tutor/anki が参照する教材フォーマット規約が入っている）。
+
+`magi` は 5 機の討論サブエージェント（次のステップ 1b）に依存する。また実決議ログ `log.md` は
+Git 追跡しない生ファイルなので、無ければ雛形 `log.example.md` から作る（**既存の `log.md` は上書きしない**）:
+
+```bash
+magi="$REPO/claude/skills/magi"
+if [ -f "$magi/log.example.md" ] && [ ! -e "$magi/log.md" ]; then
+  cp "$magi/log.example.md" "$magi/log.md"
+  echo "作成: $magi/log.md（雛形からコピー）"
+else
+  echo "スキップ: magi/log.md は既にある or 雛形が無い"
+fi
+```
+
+---
+
+## ステップ 1b: MAGI のサブエージェントをリンク
+
+`magi` スキルは 5 機の討論エージェント（`melchior` / `balthasar` / `casper` / `artaban` /
+`sibylla`）を `subagent_type` で呼ぶ。`$REPO/claude/agents/` 配下の各定義を `~/.claude/agents/`
+にシンボリックリンクする（スキルと同じく双方向同期のため symlink）。
+
+```bash
+mkdir -p ~/.claude/agents
+for agent_file in "$REPO"/claude/agents/*.md; do
+  name="$(basename "$agent_file")"
+  dest="$HOME/.claude/agents/$name"
+  if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+    mv "$dest" "$dest.bak"
+    echo "バックアップ: $dest -> $dest.bak"
+  fi
+  ln -sfn "$agent_file" "$dest"
+  echo "リンク: $dest -> $agent_file"
+done
+```
 
 ---
 
@@ -167,7 +202,9 @@ cp -r /tmp/anthropic-skills/skills/frontend-design ~/.claude/skills/ 2>/dev/null
 ## ステップ 6: 検証
 
 ```bash
-echo "=== スキルのリンク ==="; ls -la ~/.claude/skills | grep -E "cognitive-walkthrough|goal-locked-loop|meeting-minutes|pdf2text|study-material-optimizer|tutor|anki|shared"
+echo "=== スキルのリンク ==="; ls -la ~/.claude/skills | grep -E "cognitive-walkthrough|goal-locked-loop|magi|meeting-minutes|pdf2text|study-material-optimizer|tutor|anki|shared"
+echo "=== MAGI サブエージェント ==="; ls -la ~/.claude/agents | grep -E "melchior|balthasar|casper|artaban|sibylla"
+echo "=== MAGI 実ログ ==="; ls -la ~/.claude/skills/magi/log.md 2>/dev/null || echo "log.md 未作成（初回 /magi 前なら OK）"
 echo "=== vimrc ==="; ls -la ~/.vimrc
 echo "=== bashrc ==="; grep -c ">>> my-toolkit" ~/.bashrc
 echo "=== rtk ==="; command -v rtk && grep -c "rtk hook" ~/.claude/settings.json

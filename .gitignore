@@ -6,3 +6,6 @@
 
 # OS
 .DS_Store
+
+# MAGI の実決議ログ（マシンローカルの生ログ・私的議題を含みうる）。雛形は log.example.md
+claude/skills/magi/log.md
