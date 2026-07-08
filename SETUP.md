@@ -47,29 +47,32 @@ for skill_dir in "$REPO"/claude/skills/*/; do
 done
 ```
 
-リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `magi` / `meeting-minutes` /
-`pdf2text` / `study-material-optimizer` / `tutor` / `anki` / `shared`（学習パイプラインの
+リンクされるスキル: `cognitive-walkthrough` / `goal-locked-loop` / `magi` / `magi-brainstorm` /
+`meeting-minutes` / `pdf2text` / `study-material-optimizer` / `tutor` / `anki` / `shared`（学習パイプラインの
 共通リソース。SKILL.md を持たないが、optimizer/tutor/anki が参照する教材フォーマット規約が入っている）。
 
-`magi` は 5 機の討論サブエージェント（次のステップ 1b）に依存する。また実決議ログ `log.md` は
-Git 追跡しない生ファイルなので、無ければ雛形 `log.example.md` から作る（**既存の `log.md` は上書きしない**）:
+`magi`（討論・収束）と `magi-brainstorm`（構想・発散）は、共通の 5 機サブエージェント
+（次のステップ 1b）に依存する。また両者の実ログ `log.md` は Git 追跡しない生ファイルなので、
+無ければ雛形 `log.example.md` から作る（**既存の `log.md` は上書きしない**）:
 
 ```bash
-magi="$REPO/claude/skills/magi"
-if [ -f "$magi/log.example.md" ] && [ ! -e "$magi/log.md" ]; then
-  cp "$magi/log.example.md" "$magi/log.md"
-  echo "作成: $magi/log.md（雛形からコピー）"
-else
-  echo "スキップ: magi/log.md は既にある or 雛形が無い"
-fi
+for s in magi magi-brainstorm; do
+  dir="$REPO/claude/skills/$s"
+  if [ -f "$dir/log.example.md" ] && [ ! -e "$dir/log.md" ]; then
+    cp "$dir/log.example.md" "$dir/log.md"
+    echo "作成: $dir/log.md（雛形からコピー）"
+  else
+    echo "スキップ: $s/log.md は既にある or 雛形が無い"
+  fi
+done
 ```
 
 ---
 
 ## ステップ 1b: MAGI のサブエージェントをリンク
 
-`magi` スキルは 5 機の討論エージェント（`melchior` / `balthasar` / `casper` / `artaban` /
-`sibylla`）を `subagent_type` で呼ぶ。`$REPO/claude/agents/` 配下の各定義を `~/.claude/agents/`
+`magi`・`magi-brainstorm` スキルは、共通の 5 機エージェント（`melchior` / `balthasar` / `casper` /
+`artaban` / `sibylla`。討論と構想の 2 モードを持つ）を `subagent_type` で呼ぶ。`$REPO/claude/agents/` 配下の各定義を `~/.claude/agents/`
 にシンボリックリンクする（スキルと同じく双方向同期のため symlink）。
 
 ```bash
