@@ -123,6 +123,45 @@ fi
 > 注意: 会社固有の CA 証明書（`NODE_EXTRA_CA_CERTS`）などは **このリポジトリには含めない**。
 > 必要な環境では各自で `~/.bashrc` に追記すること。
 
+### 2c. Claude Code ステータスライン
+
+`claude/statusline.py`（Python 3 標準ライブラリのみ）を `~/.claude/statusline.py` に
+symlink し、`settings.json` に `statusLine` キーだけを冪等に足す。
+ステータスラインは 1 行で `ctx / 5h / 7d / モデル別週次リミット`（`ラベル: N% / 残り時間`）と
+`モデル・effort・コスト` を出す。使用率のグラデーション等は無効化した白黒表示。
+
+```bash
+# symlink（スキルと同じく双方向同期。実体があればバックアップ）
+dest="$HOME/.claude/statusline.py"
+if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+  mv "$dest" "$dest.bak"
+  echo "バックアップ: $dest -> $dest.bak"
+fi
+ln -sfn "$REPO/claude/statusline.py" "$dest"
+echo "リンク: $dest -> $REPO/claude/statusline.py"
+```
+
+`settings.json` は全体を触らず、`statusLine` キーだけを足す（既にあれば上書きしない）:
+
+```bash
+python3 - <<'PY'
+import json, os
+p = os.path.expanduser("~/.claude/settings.json")
+d = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
+if "statusLine" not in d:
+    d["statusLine"] = {"type": "command", "command": "python3 ~/.claude/statusline.py"}
+    json.dump(d, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    print("追記: settings.json に statusLine を追加")
+else:
+    print("スキップ: statusLine は既にある")
+PY
+```
+
+> 週次リミットのバー（`Fable: 100% ...`）は `https://api.anthropic.com/api/oauth/usage` を
+> `~/.claude/.credentials.json` のトークンで叩いた結果を `/tmp` に 120 秒キャッシュして表示する
+> （取得はバックグラウンドの子プロセス、メインは非ブロッキング）。トークンや credentials は
+> **このリポジトリには含めない**。取れない環境では週次バーだけ静かに省略される。
+
 ---
 
 ## ステップ 3: rtk（トークン圧縮プロキシ）+ フック
@@ -210,6 +249,8 @@ echo "=== MAGI サブエージェント ==="; ls -la ~/.claude/agents | grep -E 
 echo "=== MAGI 実ログ ==="; ls -la ~/.claude/skills/magi/log.md 2>/dev/null || echo "log.md 未作成（初回 /magi 前なら OK）"
 echo "=== vimrc ==="; ls -la ~/.vimrc
 echo "=== bashrc ==="; grep -c ">>> my-toolkit" ~/.bashrc
+echo "=== statusline ==="; ls -la ~/.claude/statusline.py; grep -c '"statusLine"' ~/.claude/settings.json
+echo '{}' | python3 ~/.claude/statusline.py >/dev/null && echo "statusline: 空JSONでもエラー無し"
 echo "=== rtk ==="; command -v rtk && grep -c "rtk hook" ~/.claude/settings.json
 echo "=== playwright ==="; command -v playwright-mcp; ls ~/.cache/ms-playwright/chromium-*/chrome-linux*/chrome 2>/dev/null | head -1
 ```

@@ -59,6 +59,7 @@ Claude が `SETUP.md` を読み、スキルのリンク・シェル設定・CLI 
 | `claude/skills/tutor/` | 教材を使った対話型の家庭教師スキル（進捗・弱点を永続記録） |
 | `claude/skills/anki/` | 教材・模擬試験から Anki フラッシュカード用 TSV を生成するスキル |
 | `claude/skills/shared/` | スキル共通リソース: 教材 Markdown フォーマット規約（optimizer/tutor/anki の共有契約） |
+| `claude/statusline.py` | Claude Code のステータスライン（`~/.claude/statusline.py` にリンク）。1 行で `ctx / 5h / 7d / モデル別週次リミット` と `モデル・effort・コスト` を白黒表示。Python 標準ライブラリのみ |
 | `shell/vimrc` | Vim 設定（`~/.vimrc` にリンク） |
 | `shell/bashrc.snippet` | `~/.bashrc` に追記する汎用部分（PATH / nvm） |
 
@@ -72,7 +73,8 @@ Claude が `SETUP.md` を読み、スキルのリンク・シェル設定・CLI 
 
 ## このリポジトリで管理しないもの
 
-- **`~/.claude/settings.json` の許可リスト（permissions）** — 環境ごとに育つので持ち運ばない。rtk フックは SETUP が登録する
+- **`~/.claude/settings.json` の許可リスト（permissions）** — 環境ごとに育つので持ち運ばない。rtk フックと `statusLine` キーは SETUP が登録する
+- **認証情報**（`~/.claude/.credentials.json` / OAuth トークン）— ステータスラインの週次リミット取得に使うが、リポジトリには置かない
 - **業務固有の設定**（git のユーザー ID、社内 CA 証明書など）— 個人の公開リポジトリには置かない
 - **作業日誌などの実データ** — 各プロジェクト側に残す
 
