@@ -11,6 +11,9 @@
 claude/skills/magi/log.md
 claude/skills/magi-brainstorm/log.md
 
+# seidoku-coach の個人学習データ（カルテ・リベンジ文庫・ログ。初回利用時に自動生成される）
+claude/skills/seidoku-coach/data/
+
 # Python バイトコード
 __pycache__/
 *.pyc
