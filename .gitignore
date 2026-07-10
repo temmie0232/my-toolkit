@@ -10,3 +10,7 @@
 # MAGI / MAGI-BRAINSTORM の実ログ（マシンローカルの生ログ・私的議題を含みうる）。雛形は log.example.md
 claude/skills/magi/log.md
 claude/skills/magi-brainstorm/log.md
+
+# Python バイトコード
+__pycache__/
+*.pyc

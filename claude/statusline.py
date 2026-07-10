@@ -3,10 +3,10 @@
 """Claude Code status line.
 
 Reads a JSON payload on stdin (provided by Claude Code on every status-line
-refresh) and prints a single line joining, in order:
+refresh) and prints two lines:
 
-  usage ........ ctx / 5h / 7d / weekly-limit percentages
-  Claude info .. model, cost, output style
+  line 1: everything else . ctx, model, cost, output style
+  line 2: rate limits ..... 5h / 7d / per-model weekly percentages
 
 Pure Python 3 standard library only (no pip deps).  Every piece is built inside
 its own try/except so a missing field, a non-git dir, or a dead API never leaks
@@ -284,13 +284,9 @@ def _now():
 # line builders (each returns list of item strings; failures -> [])
 # --------------------------------------------------------------------------- #
 
-def build_line1(data, weekly_bars):
+def build_rates(data, weekly_bars):
+    """Rate-limit items: 5h / 7d / per-model weekly percentages."""
     items = []
-    ctx = g(data, "context_window", "used_percentage")
-    if ctx is not None:
-        seg = bar_segment("ctx", ctx, "")     # no reset for ctx
-        if seg:
-            items.append(seg)
     for key in ("five_hour", "seven_day"):
         rl = g(data, "rate_limits", key)
         if not isinstance(rl, dict):
@@ -304,9 +300,16 @@ def build_line1(data, weekly_bars):
     return items
 
 
-def build_line2_items(data):
+def build_other(data):
+    """Everything else: ctx + Claude info (model, cost, output style)."""
     items = []
-    # 1. model + effort
+    # 1. context window
+    ctx = g(data, "context_window", "used_percentage")
+    if ctx is not None:
+        seg = bar_segment("ctx", ctx, "")     # no reset for ctx
+        if seg:
+            items.append(seg)
+    # 2. model + effort
     model = g(data, "model", "display_name")
     if model:
         seg = color(model, CYAN)
@@ -314,14 +317,14 @@ def build_line2_items(data):
         if effort:
             seg += color(" %s" % effort, GRAY)
         items.append(seg)
-    # 2. cost
+    # 3. cost
     cost = g(data, "cost", "total_cost_usd", default=0) or 0
     try:
         if float(cost) > 0:
             items.append(color("$%.2f" % float(cost), GRAY))
     except (TypeError, ValueError):
         pass
-    # 3. output style (hide when default)
+    # 4. output style (hide when default)
     style = g(data, "output_style", "name")
     if style and style != "default":
         items.append(color(style, GRAY))
@@ -377,13 +380,17 @@ def main():
         except Exception:
             return []
 
-    usage = safe(build_line1, data, weekly)
-    claude = safe(build_line2_items, data)
+    rates = safe(build_rates, data, weekly)    # 5h / 7d / weekly
+    other = safe(build_other, data)            # ctx + model / cost / style
 
-    # everything on a single line, in order: usage -> Claude info
-    items = usage + claude
-    if items:
-        sys.stdout.write(sep.join(items) + "\n")
+    # other on top, rate limits below
+    out = []
+    if other:
+        out.append(sep.join(other))
+    if rates:
+        out.append(sep.join(rates))
+    if out:
+        sys.stdout.write("\n".join(out) + "\n")
 
 
 if __name__ == "__main__":
